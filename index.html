@@ -78,7 +78,7 @@
     flex:1 1 0;min-width:0;border:1px solid var(--line);border-radius:14px;
     padding:12px 14px;background:#fcfbf8;
   }
-  .fact b{display:block;font-size:19px;letter-spacing:-.01em;font-weight:700}
+  .fact b{display:block;font-size:19px;letter-spacing:-.01em;font-weight:700;line-height:1.25;margin-bottom:2px}
   .fact span{font-size:11.5px;color:var(--muted);letter-spacing:.06em}
   .note{
     margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);
@@ -128,7 +128,7 @@
     transition:.18s;
   }
   .opt.on .badge{background:var(--accent);color:#fff}
-  .opt-title{font-size:16px;font-weight:700;letter-spacing:-.005em}
+  .opt-title{font-size:16.5px;font-weight:700;letter-spacing:-.005em;line-height:1.5}
   .opt-sub{display:block;font-size:11.5px;color:var(--muted);letter-spacing:.04em;margin:5px 0 0}
   .opt.on .opt-sub{color:#7b72d8}
   .opt-body{
@@ -189,12 +189,19 @@
   }
   .dims{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
   .dims li{
-    display:flex;align-items:center;gap:10px;
-    padding:13px 2px;border-bottom:1px solid var(--line);font-size:13.5px;
+    padding:14px 2px;border-bottom:1px solid var(--line);
   }
+  .dim-main{display:flex;align-items:baseline;gap:10px;font-size:13.5px}
   .dims .p{font-weight:800;color:var(--accent);width:16px;flex:none}
-  .dims .n{font-weight:600}
-  .dims .alt{margin-left:auto;color:var(--muted);font-size:12px;text-align:right}
+  .dims .n{font-weight:650}
+  .dim-alt{padding-left:26px;margin-top:3px;color:var(--muted);font-size:11.5px;line-height:1.6}
+
+  .check{
+    margin-top:18px;padding:13px 15px;border-radius:13px;
+    background:#fbfaf6;border:1px solid #f0ece3;
+    font-size:12.5px;line-height:1.85;color:#6b665c;
+  }
+  .check b{display:block;font-size:10px;letter-spacing:.14em;color:#a8a196;margin-bottom:5px;font-weight:700}
   .foot{margin-top:22px;font-size:11.5px;color:var(--muted);line-height:1.8}
 
   @media (max-width:380px){
@@ -215,8 +222,8 @@
   <section class="screen on" id="screen-intro">
     <div class="card">
       <span class="kicker">开始之前</span>
-      <h1>四道题，<br>看清你的<em>思维接口</em></h1>
-      <p class="lead">每道题对应一个维度，题干写的是具体情境，选项写的是两种不同的底层运作方式。没有对错，也不用挑“更好的那个”——选你身体里真实发生的那一个。</p>
+      <h1>四道题，<br>看清自己的<em>第一反应</em></h1>
+      <p class="lead">四道题分别对应四个维度。每题给一个具体场景，两个选项没有对错，也不用挑“看起来更高级的那个”——选你身上真实发生的那一个。</p>
       <div class="facts">
         <div class="fact"><b>4</b><span>道情境题</span></div>
         <div class="fact"><b>2</b><span>分钟</span></div>
@@ -269,78 +276,70 @@
 
   var QUESTIONS = [
     {
-      dim: "E / I",
-      name: "心理能量的恢复场域",
-      scene: '经历了一整周高强度的脑力消耗后，迎来了一段完全自由支配的休息时间。撇开后天的社交技巧与礼貌，只看神经系统最本质的“回血”方式：',
+      name: "精力的回血方式",
+      scene: "连轴转忙完一整周，终于迎来完全属于自己的周末。撇开工作应酬和社交礼貌，单看你身体和大脑最本能的“回血”方式：",
+      check: "真正让你缓过劲来的，是走出去跟人和世界产生碰撞，还是退回来把自己藏进绝对安静的壳里？",
       options: [
         {
           letter: "E",
-          title: "交互激活型",
-          sub: "外部能量流",
-          body: '在与外部环境的连接与互动中唤醒能量。哪怕身体略有疲惫，出门走走、感受街头的人群烟火气，或者和合拍的人聊天碰撞，在流动的外部刺激中，你的精神与思维往往能更快完成“热启动”。<br><br>如果长期处于绝对封闭、缺乏外部输入的状态，思维容易感到发闷且认知活力下降。'
+          title: "在热闹与互动中满血复活",
+          body: "哪怕身体有点累，只要走出门去吹吹风、钻进有烟火气的街巷，或者约上合拍的朋友吃顿饭、聊聊天，你的精神头反而能很快被重新点亮。<br><br>如果让你一连两三天关在屋里谁也不见、什么新鲜外界刺激都没有，你不仅不会觉得休息好了，反而容易觉得整个人发闷、发蔫。"
         },
         {
           letter: "I",
-          title: "独立真空型",
-          sub: "内部能量流",
-          body: '在无外部打扰的私密空间中沉淀降温。外部世界的互动始终在占用后台带宽；哪怕聚会再自如、氛围再好，核心电量依然在持续消耗。<br><br>唯有关起门来、手机静音，置身于完全自主的独处领地中，心智系统才开始真正自我修复与深度整合。'
+          title: "在独处与静音中缓慢回温",
+          body: "只要身边有人、需要对外做出反应，哪怕聚会气氛再好、聊得再尽兴，你的精神电量其实都在缓慢往下掉。<br><br>只有彻底关上门、把手机调成静音，待在完全没人打扰的私人空间里发呆或做自己的事，你紧绷的神经才算真正松下来，开始恢复元气。"
         }
       ]
     },
     {
-      dim: "S / N",
-      name: "认知经验的焦点与多巴胺来源",
-      scene: "在日常阅读、看视频、接触新事物或发展个人爱好时，哪种维度的信息最能触碰到你本能的好奇心：",
+      name: "好奇心的落脚点",
+      scene: "平时刷视频、看书、聊天或者发展个人爱好时，哪一类内容最能让你产生“有意思、想多看两眼”的兴奋感？",
+      check: "让你觉得更过瘾的，是现实世界里鲜活、确凿的体验与干货，还是跳出眼前事实去琢磨规律、玩味各种可能性？",
       options: [
         {
           letter: "S",
-          title: "实体质感型",
-          sub: "物理世界的实存",
-          body: '注意力天然扎根于具体、生动、可感知的现实。不仅包括实用的生活技能、器材操作与确凿事实，也包括美食的风味层次、手艺质感、光影构图等鲜活的感官体验。<br><br>你享受的是事物在现实层面确凿饱满的存在；面对脱离实际的纯概念空谈或悬空脑洞，容易感到枯燥且缺乏实在感。'
+          title: "迷恋真实可感的细节与经验",
+          body: "你的注意力天然被“看得见、摸得着、用得上”的事物吸引。无论是美食的口感层次、摄影的光影质感、手工与器材的实操技巧，还是真实发生的具体故事与生活经验。<br><br>你喜欢脚踏实地的充实感；如果话题彻底脱离现实，变成纯粹的概念空谈或天马行空的假想，你会觉得干巴、飘忽，很难真正投入进去。"
         },
         {
           letter: "N",
-          title: "概念模型型",
-          sub: "抽象维度的机制",
-          body: '注意力天然穿透表象，去捕捉背后的运行逻辑、隐藏模式与系统关联。哪怕是一套现实中“用不上”的冷门假设、逻辑悖论或系统演化模型，只要搞懂了其自洽的底层机制，就能获得纯粹的智力快感。<br><br>如果长期待在缺乏抽象思考的日常琐碎与事实流水账里，会感到思维干涸、索然无味。'
+          title: "迷恋表象背后的规律与想象",
+          body: "你的注意力总是不自觉地穿过表面事实，去琢磨“它为什么会这样”或者“还能衍生出什么可能”。哪怕是一个现实中毫无用处的脑洞假设、历史隐喻，或是某种抽象的底层规律，只要能把不同事物串联起来、想通其中的门道，你就会觉得极其过瘾。<br><br>如果长期只接触日常琐事和按部就班的具体操作，你会觉得思维像生了锈一样无聊。"
         }
       ]
     },
     {
-      dim: "T / F",
-      name: "面对他人倾诉时的终极诉求",
-      scene: "好友因为自身在规则或逻辑上的疏漏把事情搞砸了，跑来向你委屈倾诉。在大家都具备基本成年人教养、第一反应一定会先照顾情绪并给予安抚的前提下，看你内心深处对这件事的归宿设定：",
+      name: "面对倾诉时的内心本能",
+      scene: "好朋友因为自己的失误把一件重要的事搞砸了，跑来找你大吐苦水。假设我们都有基本的同理心，第一反应肯定都是先安慰对方；但安慰过后，你内心深处觉得怎样做才算“真正帮到了 TA”？",
+      check: "安慰朋友时，你觉得更有价值的终点是帮 TA 看清问题、把事情摆平，还是接住 TA 的脆弱、把心情抚平？",
       options: [
         {
           letter: "T",
-          title: "诊断修复型",
-          sub: "系统逻辑的闭环",
-          body: "内心始终清醒：安抚情绪只是必要的前置缓冲，等对方平复下来，终究还是得把现实中的逻辑漏洞、因果问题给理顺，并找到止损或解决办法。<br><br>如果对方永远拒绝复盘、下次在同一个坑里反复摔倒又来哭诉，你会感到极度心累且不可理喻，因为“不解决问题、光循环宣泄”毫无意义。"
+          title: "帮 TA 理清症结，找到破局的办法",
+          body: "在你看来，安抚情绪只是帮对方冷静下来的第一步；要想真正渡过难关，终究得弄清楚问题出在哪、接下来怎么补救或止损。<br><br>等对方情绪缓和后，你会本能地想帮 TA 复盘来龙去脉、捋出解决方案。如果只是顺着对方的话一味附和安慰，却对近在眼前的实际问题视而不见，你会觉得这种陪伴有点敷衍，没解决根本问题。"
         },
         {
           letter: "F",
-          title: "情感接纳型",
-          sub: "人文价值的托底",
-          body: "内心深处坚信：在人脆弱受挫的时刻，“被全盘接纳、感到自己被理解、有人无条件站在自己这边”本身就是倾诉的核心价值。<br><br>哪怕问题短期内无解、甚至就是朋友自身性格造成的，只要能让他感到温暖与不孤单，这次陪伴就极具意义；你反感在别人难过时急着用修理工姿态去剖析对错。"
+          title: "给 TA 情绪托底，让 TA 知道有人撑腰",
+          body: "在你看来，当一个人受挫脆弱时，“感到自己被理解、被接纳、有人无条件站在自己这边”本身就是最大的治愈。<br><br>哪怕这件事眼下没有解决办法，甚至原本就是朋友自己没做好，只要能接住 TA 的委屈、让 TA 觉得温暖不孤单，这次倾听就非常有价值。在别人正难过的时候急着去分析对错、扮演“人生导师”指点江山，会让你觉得太过冰冷。"
         }
       ]
     },
     {
-      dim: "J / P",
-      name: "做方案与预订时的心理定格机制",
-      scene: "你需要敲定一项重要的安排（如预订一次出行的酒店/车票，或选定一套核心方案）。在经过认真调研并选定了一套满意合理的方案之后，面对后续的执行过程：",
+      name: "做计划时的确定感需求",
+      scene: "你需要安排一次出行或推进一项重要事务。抛开拖延症不谈——假设时间充裕，你也已经挑中了一套还不错的方案，接下来你更习惯哪种状态？",
+      check: "做安排时，定下方案是为了尽早消除不确定感、让心里尘埃落定，还是只当个保底参考、随时欢迎计划之外的新变化？",
       options: [
         {
           letter: "J",
-          title: "闭合归档型",
-          sub: "追求确定性与秩序终结",
-          body: "方案一旦敲定买定，你会倾向于立刻关闭相关页面、归档这件事情，将注意力彻底转向执行或别的事务。<br><br>对你而言，“事情悬而未决”会持续在后台耗费带宽；定案的核心价值在于建立确定性并释放心理资源。即便后续偶然冒出了看似更好的新选项，只要原方案没有硬伤，重新推翻退改会给你带来明显的折腾感与失序感，通常选择按既定路线走。"
+          title: "尽早拍板落定，心里才踏实",
+          body: "方案既然合适，你就会倾向于赶紧敲定下来，把这件事从脑子里“划掉”，然后安心去干别的。<br><br>对你来说，事情悬在半空没个准信儿，哪怕不用马上处理，心里也会隐隐觉得有桩心事挂着。你喜欢一切按计划稳步推进的秩序感；如果没什么硬伤却要临时推翻重来，会让你觉得被打乱了节奏，非常折腾。"
         },
         {
           letter: "P",
-          title: "动态演进型",
-          sub: "追求开放度与最优解弹性",
-          body: "方案即便已经敲定付款，在现实截止期到来前，你的心智系统依然对外界保持开放与动态监听。<br><br>对你而言，提前定案只是占位保底，并不意味着系统被焊死。如果在后续过程中突然发现了更合适、体验更好或性价比更高的更优解（且切换成本可控），你能够极其顺畅、毫无心理包袱地退掉旧方案换上新方案，享受根据新变量实时迭代系统的自由。"
+          title: "留出机动空间，随时看情况调整",
+          body: "哪怕提前订好了方案，在你心里那也只是一个“保底选项”，不代表事情就这么定死了。<br><br>如果把未来的每一天、每一步都早早锁死，反而会让你产生一种被框住的束缚感。你更喜欢在最终截止前保留一点随机应变的余地——万一到时候心情变了、或者突然发现了更好玩的去处，能够顺着当下的状态随时拐个弯，会让你觉得自在得多。"
         }
       ]
     }
@@ -434,12 +433,13 @@
           '<span class="opt-title">' + o.title + '</span>' +
           '<span class="tick"></span>' +
         '</div>' +
-        '<span class="opt-sub">' + o.sub + '</span>' +
+        (o.sub ? '<span class="opt-sub">' + o.sub + '</span>' : '') +
         '<p class="opt-body">' + o.body + '</p>' +
       '</button>';
     }).join("");
 
-    $("quizBody").innerHTML = '<p class="scene">' + q.scene + '</p><div class="opts">' + opts + '</div>';
+    $("quizBody").innerHTML = '<p class="scene">' + q.scene + '</p><div class="opts">' + opts + '</div>' +
+      '<div class="check"><b>一句话自检</b>' + q.check + '</div>';
 
     Array.prototype.forEach.call($("quizBody").querySelectorAll(".opt"), function (el) {
       el.addEventListener("click", function () {
@@ -480,18 +480,18 @@
     $("rTag").textContent = t[2];
     $("rDesc").textContent = t[3] || "";
 
-    var dims = [["E", "交互激活型", "I", "独立真空型"],
-                ["S", "实体质感型", "N", "概念模型型"],
-                ["T", "诊断修复型", "F", "情感接纳型"],
-                ["J", "闭合归档型", "P", "动态演进型"]];
+    var dims = [["E", "在热闹与互动中满血复活", "I", "在独处与静音中缓慢回温"],
+                ["S", "迷恋真实可感的细节与经验", "N", "迷恋表象背后的规律与想象"],
+                ["T", "帮 TA 理清症结，找到破局的办法", "F", "给 TA 情绪托底，让 TA 知道有人撑腰"],
+                ["J", "尽早拍板落定，心里才踏实", "P", "留出机动空间，随时看情况调整"]];
 
     $("rDims").innerHTML = dims.map(function (d, i) {
       var picked = answers[i];
       var name = picked === d[0] ? d[1] : d[3];
       var other = picked === d[0] ? d[3] : d[1];
       var otherLetter = picked === d[0] ? d[2] : d[0];
-      return '<li><span class="p">' + picked + '</span><span class="n">' + name + '</span>' +
-             '<span class="alt">而非 ' + otherLetter + ' ' + other + '</span></li>';
+      return '<li><div class="dim-main"><span class="p">' + picked + '</span><span class="n">' + name + '</span></div>' +
+             '<div class="dim-alt">而非 ' + otherLetter + ' · ' + other + '</div></li>';
     }).join("");
 
     $("actions").innerHTML = '<div class="inner">' +

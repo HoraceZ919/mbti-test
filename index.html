@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MBTI 人格测试 · 四道题</title>
+<meta name="description" content="四道情境题，对应 MBTI 的四个维度。凭第一直觉选，看看你的类型。">
+<meta property="og:title" content="MBTI 人格测试 · 四道题">
+<meta property="og:description" content="四道情境题，对应 MBTI 的四个维度。凭第一直觉选，看看你的类型。">
+<meta name="theme-color" content="#f7f5f0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46d6'/><text x='50' y='68' font-size='52' font-family='system-ui' font-weight='700' fill='white' text-anchor='middle'>M</text></svg>">
+<style>
+  :root{
+    --bg:#f7f5f0;
+    --card:#ffffff;
+    --ink:#1b1a17;
+    --ink-2:#454139;
+    --muted:#8a857c;
+    --line:#e8e4db;
+    --accent:#4f46d6;
+    --soft:#f3f1ff;
+    --radius:22px;
+    --maxw:660px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(900px 620px at 12% -12%, #e9e5ff 0%, rgba(233,229,255,0) 62%),
+      radial-gradient(720px 520px at 102% 2%, #e0f3ef 0%, rgba(224,243,239,0) 58%),
+      var(--bg);
+    background-attachment:fixed;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+    padding-bottom:132px;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  /* ---------- 顶部 ---------- */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 2px 10px;font-size:12px;letter-spacing:.14em;
+    color:var(--muted);text-transform:uppercase;font-weight:600;
+  }
+  .topbar .mark{display:flex;align-items:center;gap:8px;color:var(--ink);letter-spacing:.08em}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(79,70,214,.12)}
+  .topbar .ver{letter-spacing:.1em}
+
+  /* ---------- 卡片 ---------- */
+  .card{
+    background:var(--card);
+    border:1px solid rgba(27,26,23,.06);
+    border-radius:var(--radius);
+    box-shadow:0 1px 2px rgba(24,20,50,.04), 0 26px 60px -38px rgba(24,20,50,.38);
+    padding:30px 24px 28px;
+    margin-top:6px;
+  }
+  .screen{display:none}
+  .screen.on{display:block;animation:rise .42s cubic-bezier(.2,.7,.3,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- 开始页 ---------- */
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11.5px;letter-spacing:.16em;font-weight:650;color:var(--accent);
+    background:var(--soft);border-radius:100px;padding:6px 12px;
+  }
+  h1{
+    font-size:clamp(30px,8vw,42px);line-height:1.22;letter-spacing:-.02em;
+    font-weight:750;margin:18px 0 0;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .lead{margin:16px 0 0;font-size:15.5px;line-height:1.85;color:var(--ink-2)}
+  .facts{display:flex;gap:10px;margin:24px 0 0;flex-wrap:wrap}
+  .fact{
+    flex:1 1 0;min-width:0;border:1px solid var(--line);border-radius:14px;
+    padding:12px 14px;background:#fcfbf8;
+  }
+  .fact b{display:block;font-size:19px;letter-spacing:-.01em;font-weight:700}
+  .fact span{font-size:11.5px;color:var(--muted);letter-spacing:.06em}
+  .note{
+    margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);
+    font-size:12.5px;color:var(--muted);line-height:1.75;
+  }
+
+  /* ---------- 进度 ---------- */
+  .bar{display:flex;gap:6px;margin-bottom:22px}
+  .bar i{flex:1;height:3px;border-radius:2px;background:var(--line);transition:.35s}
+  .bar i.done{background:var(--accent)}
+  .bar i.now{background:linear-gradient(90deg,var(--accent),#9a8cff)}
+
+  /* ---------- 题目 ---------- */
+  .qhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .qidx{font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+  .qidx span{color:var(--muted);font-weight:500;font-size:12px}
+  .qdim{
+    font-size:11.5px;color:var(--muted);letter-spacing:.04em;text-align:right;
+    max-width:62%;
+  }
+  .scene{
+    margin:14px 0 4px;font-size:15px;line-height:1.95;color:#34312b;
+    padding-left:14px;border-left:2px solid #ded8f8;
+  }
+  .scene b{font-weight:650;color:var(--ink)}
+
+  .opts{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+  .opt{
+    display:block;width:100%;text-align:left;font:inherit;color:inherit;
+    background:#fff;border:1.5px solid var(--line);border-radius:16px;
+    padding:15px 16px 17px;cursor:pointer;
+    transition:border-color .18s, background .18s, box-shadow .18s, transform .12s;
+  }
+  .opt:hover{border-color:#cfc9f5}
+  .opt:active{transform:scale(.994)}
+  .opt.on{
+    border-color:var(--accent);
+    background:linear-gradient(180deg,#fbfaff,#f4f2ff);
+    box-shadow:0 0 0 3px rgba(79,70,214,.09);
+  }
+  .opt-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:25px;height:25px;border-radius:8px;flex:none;
+    background:#f2efe8;color:#7a7268;
+    font-size:12.5px;font-weight:750;letter-spacing:.02em;
+    transition:.18s;
+  }
+  .opt.on .badge{background:var(--accent);color:#fff}
+  .opt-title{font-size:16px;font-weight:700;letter-spacing:-.005em}
+  .opt-sub{display:block;font-size:11.5px;color:var(--muted);letter-spacing:.04em;margin:5px 0 0}
+  .opt.on .opt-sub{color:#7b72d8}
+  .opt-body{
+    margin:11px 0 0;font-size:14px;line-height:1.92;color:var(--ink-2);
+    letter-spacing:.002em;
+  }
+  .opt.on .opt-body{color:#3a3653}
+  .tick{
+    margin-left:auto;width:18px;height:18px;border-radius:50%;flex:none;
+    border:1.5px solid var(--line);position:relative;transition:.18s;
+  }
+  .opt.on .tick{border-color:var(--accent);background:var(--accent)}
+  .opt.on .tick::after{
+    content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;
+    border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(42deg);
+  }
+
+  /* ---------- 底部操作条 ---------- */
+  .actions{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    padding:14px 20px calc(16px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg, rgba(247,245,240,0) 0%, rgba(247,245,240,.92) 34%, var(--bg) 74%);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    display:none;
+  }
+  .actions.show{display:block;animation:rise .3s ease both}
+  .actions .inner{max-width:var(--maxw);margin:0 auto;display:flex;gap:10px}
+  .btn{
+    flex:1;font:inherit;font-size:15.5px;font-weight:650;letter-spacing:.01em;
+    color:#fff;background:var(--ink);border:0;border-radius:15px;padding:16px 18px;
+    cursor:pointer;transition:.18s;
+  }
+  .btn:active{transform:scale(.99)}
+  .btn:disabled{opacity:.24;cursor:default}
+  .btn.primary{background:var(--accent)}
+  .btn.ghost{
+    flex:0 0 auto;background:transparent;color:var(--ink-2);
+    border:1.5px solid var(--line);padding:16px 20px;
+  }
+
+  /* ---------- 结果页 ---------- */
+  .result-top{text-align:left;padding-bottom:4px}
+  .type{
+    font-size:clamp(48px,15vw,68px);line-height:1;font-weight:750;
+    letter-spacing:.13em;margin:14px 0 0;color:var(--accent);
+    margin-left:.13em;
+  }
+  .typename{margin:12px 0 0;font-size:18px;font-weight:700}
+  .typename .en{font-weight:500;color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-left:8px}
+  .tagline{margin:18px 0 0;font-size:15px;line-height:1.9;color:var(--ink-2)}
+  .desc{
+    margin:16px 0 0;font-size:14.5px;line-height:1.95;color:var(--ink-2);
+    padding:16px 16px;background:#fbfaf7;border-radius:14px;border:1px solid #f0ece3;
+  }
+  .sec-title{
+    margin:30px 0 12px;font-size:11.5px;letter-spacing:.14em;font-weight:700;
+    color:var(--muted);text-transform:uppercase;
+  }
+  .dims{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  .dims li{
+    display:flex;align-items:center;gap:10px;
+    padding:13px 2px;border-bottom:1px solid var(--line);font-size:13.5px;
+  }
+  .dims .p{font-weight:800;color:var(--accent);width:16px;flex:none}
+  .dims .n{font-weight:600}
+  .dims .alt{margin-left:auto;color:var(--muted);font-size:12px;text-align:right}
+  .foot{margin-top:22px;font-size:11.5px;color:var(--muted);line-height:1.8}
+
+  @media (max-width:380px){
+    .card{padding:24px 18px 24px}
+    .opt-body{font-size:13.5px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="mark"><span class="dot"></span>MBTI · 四维速测</div>
+    <div class="ver">4 Questions</div>
+  </div>
+
+  <!-- 开始 -->
+  <section class="screen on" id="screen-intro">
+    <div class="card">
+      <span class="kicker">开始之前</span>
+      <h1>四道题，<br>看清你的<em>思维接口</em></h1>
+      <p class="lead">每道题对应一个维度，题干写的是具体情境，选项写的是两种不同的底层运作方式。没有对错，也不用挑“更好的那个”——选你身体里真实发生的那一个。</p>
+      <div class="facts">
+        <div class="fact"><b>4</b><span>道情境题</span></div>
+        <div class="fact"><b>2</b><span>分钟</span></div>
+        <div class="fact"><b>16</b><span>种类型</span></div>
+      </div>
+      <button class="btn primary" id="startBtn" type="button" style="margin-top:24px;width:100%">开始测试</button>
+      <p class="note">这是基于四个维度的简化版本，不是官方 MBTI 量表，结果供自我观察与娱乐参考。</p>
+    </div>
+  </section>
+
+  <!-- 答题 -->
+  <section class="screen" id="screen-quiz">
+    <div class="card">
+      <div class="bar" id="bar"></div>
+      <div class="qhead">
+        <div class="qidx" id="qidx"></div>
+        <div class="qdim" id="qdim"></div>
+      </div>
+      <div id="quizBody"></div>
+    </div>
+  </section>
+
+  <!-- 结果 -->
+  <section class="screen" id="screen-result">
+    <div class="card">
+      <div class="result-top">
+        <span class="kicker">你的类型</span>
+        <div class="type" id="rType"></div>
+        <p class="typename" id="rName"></p>
+        <p class="tagline" id="rTag"></p>
+        <div class="desc" id="rDesc"></div>
+      </div>
+      <div class="sec-title">四个维度的落点</div>
+      <ul class="dims" id="rDims"></ul>
+      <p class="foot">结果反映的是此刻的倾向，不是终身标签。同一道题，隔半年再选，答案常常不一样。</p>
+    </div>
+  </section>
+</div>
+
+<div class="actions" id="actions">
+  <div class="inner">
+    <button class="btn ghost" id="prevBtn" type="button">上一题</button>
+    <button class="btn primary" id="nextBtn" type="button" disabled>下一题</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var QUESTIONS = [
+    {
+      dim: "E / I",
+      name: "心理能量的恢复场域",
+      scene: '经历了一整周高强度的脑力消耗后，迎来了一段完全自由支配的休息时间。撇开后天的社交技巧与礼貌，只看神经系统最本质的“回血”方式：',
+      options: [
+        {
+          letter: "E",
+          title: "交互激活型",
+          sub: "外部能量流",
+          body: '在与外部环境的连接与互动中唤醒能量。哪怕身体略有疲惫，出门走走、感受街头的人群烟火气，或者和合拍的人聊天碰撞，在流动的外部刺激中，你的精神与思维往往能更快完成“热启动”。<br><br>如果长期处于绝对封闭、缺乏外部输入的状态，思维容易感到发闷且认知活力下降。'
+        },
+        {
+          letter: "I",
+          title: "独立真空型",
+          sub: "内部能量流",
+          body: '在无外部打扰的私密空间中沉淀降温。外部世界的互动始终在占用后台带宽；哪怕聚会再自如、氛围再好，核心电量依然在持续消耗。<br><br>唯有关起门来、手机静音，置身于完全自主的独处领地中，心智系统才开始真正自我修复与深度整合。'
+        }
+      ]
+    },
+    {
+      dim: "S / N",
+      name: "认知经验的焦点与多巴胺来源",
+      scene: "在日常阅读、看视频、接触新事物或发展个人爱好时，哪种维度的信息最能触碰到你本能的好奇心：",
+      options: [
+        {
+          letter: "S",
+          title: "实体质感型",
+          sub: "物理世界的实存",
+          body: '注意力天然扎根于具体、生动、可感知的现实。不仅包括实用的生活技能、器材操作与确凿事实，也包括美食的风味层次、手艺质感、光影构图等鲜活的感官体验。<br><br>你享受的是事物在现实层面确凿饱满的存在；面对脱离实际的纯概念空谈或悬空脑洞，容易感到枯燥且缺乏实在感。'
+        },
+        {
+          letter: "N",
+          title: "概念模型型",
+          sub: "抽象维度的机制",
+          body: '注意力天然穿透表象，去捕捉背后的运行逻辑、隐藏模式与系统关联。哪怕是一套现实中“用不上”的冷门假设、逻辑悖论或系统演化模型，只要搞懂了其自洽的底层机制，就能获得纯粹的智力快感。<br><br>如果长期待在缺乏抽象思考的日常琐碎与事实流水账里，会感到思维干涸、索然无味。'
+        }
+      ]
+    },
+    {
+      dim: "T / F",
+      name: "面对他人倾诉时的终极诉求",
+      scene: "好友因为自身在规则或逻辑上的疏漏把事情搞砸了，跑来向你委屈倾诉。在大家都具备基本成年人教养、第一反应一定会先照顾情绪并给予安抚的前提下，看你内心深处对这件事的归宿设定：",
+      options: [
+        {
+          letter: "T",
+          title: "诊断修复型",
+          sub: "系统逻辑的闭环",
+          body: "内心始终清醒：安抚情绪只是必要的前置缓冲，等对方平复下来，终究还是得把现实中的逻辑漏洞、因果问题给理顺，并找到止损或解决办法。<br><br>如果对方永远拒绝复盘、下次在同一个坑里反复摔倒又来哭诉，你会感到极度心累且不可理喻，因为“不解决问题、光循环宣泄”毫无意义。"
+        },
+        {
+          letter: "F",
+          title: "情感接纳型",
+          sub: "人文价值的托底",
+          body: "内心深处坚信：在人脆弱受挫的时刻，“被全盘接纳、感到自己被理解、有人无条件站在自己这边”本身就是倾诉的核心价值。<br><br>哪怕问题短期内无解、甚至就是朋友自身性格造成的，只要能让他感到温暖与不孤单，这次陪伴就极具意义；你反感在别人难过时急着用修理工姿态去剖析对错。"
+        }
+      ]
+    },
+    {
+      dim: "J / P",
+      name: "做方案与预订时的心理定格机制",
+      scene: "你需要敲定一项重要的安排（如预订一次出行的酒店/车票，或选定一套核心方案）。在经过认真调研并选定了一套满意合理的方案之后，面对后续的执行过程：",
+      options: [
+        {
+          letter: "J",
+          title: "闭合归档型",
+          sub: "追求确定性与秩序终结",
+          body: "方案一旦敲定买定，你会倾向于立刻关闭相关页面、归档这件事情，将注意力彻底转向执行或别的事务。<br><br>对你而言，“事情悬而未决”会持续在后台耗费带宽；定案的核心价值在于建立确定性并释放心理资源。即便后续偶然冒出了看似更好的新选项，只要原方案没有硬伤，重新推翻退改会给你带来明显的折腾感与失序感，通常选择按既定路线走。"
+        },
+        {
+          letter: "P",
+          title: "动态演进型",
+          sub: "追求开放度与最优解弹性",
+          body: "方案即便已经敲定付款，在现实截止期到来前，你的心智系统依然对外界保持开放与动态监听。<br><br>对你而言，提前定案只是占位保底，并不意味着系统被焊死。如果在后续过程中突然发现了更合适、体验更好或性价比更高的更优解（且切换成本可控），你能够极其顺畅、毫无心理包袱地退掉旧方案换上新方案，享受根据新变量实时迭代系统的自由。"
+        }
+      ]
+    }
+  ];
+
+  var TYPES = {
+    INTJ: ["建筑师", "Architect",
+      "习惯先在心里把整件事的骨架搭好，再动手。别人看到的是结论，你脑子里跑的是整套推演。不太爱解释过程，因为觉得说清楚比做完更累。",
+      "代价是身边的人常常要到很后面才知道你在想什么，而你已经默认他们知道了。"],
+    INTP: ["逻辑学家", "Logician",
+      "对“这个说法站不站得住”有种本能的敏感，哪怕它跟现实无关。想通一件事的快感，往往大于把这件事做成。",
+      "代价是很多想法停在“想明白了”这一步，没变成任何能拿出来的东西。"],
+    ENTJ: ["指挥官", "Commander",
+      "看事情先看目标和路径，中间的人情摩擦在你眼里多半是待解决的成本。定下来的事，你不太接受“再看看”。",
+      "代价是你会低估那些“效率上说不通、但对人很重要”的部分。"],
+    ENTP: ["辩论家", "Debater",
+      "喜欢把一个定论拆开，看看换个角度会怎样。不是要赢，是受不了事情只有一个说法。",
+      "代价是很少有一件事被你真正做完，兴趣已经转到下一个。"],
+    INFJ: ["提倡者", "Advocate",
+      "对人的情绪有近乎过载的感知，同时又在心里守着一套不肯让步的标准。看着温和，其实很难被说动。",
+      "代价是你替别人消化了太多情绪，却很少让人看见自己的消耗。"],
+    INFP: ["调停者", "Mediator",
+      "心里有一套很私人的价值排序，平时不拿出来讲。真被踩到的时候，会安静地退出，而不是争论。",
+      "代价是很多话没说出口，别人以为你不在意。"],
+    ENFJ: ["主人公", "Protagonist",
+      "很自然地去照顾一个场子里每个人的状态，也真心希望别人好。",
+      "代价是你会把别人的期待当成自己的目标，直到某天突然撑不住。"],
+    ENFP: ["竞选者", "Campaigner",
+      "对新鲜的人和事有种停不下来的兴奋，同时对人本身的处境很在意。",
+      "代价是热情来得快也散得快，收尾的活儿总落在别人或未来的自己身上。"],
+    ISTJ: ["物流师", "Logistician",
+      "信的是“事情该怎么做就怎么做”，承诺过的事一定落地。不喜欢临时改，因为改一次就要重新算一遍。",
+      "代价是变化真的来的时候，你需要比多数人更长的时间重新站稳。"],
+    ISFJ: ["守卫者", "Defender",
+      "记得住别人随口提过的小事，也默默把它们办了。很少邀功，被当成理所当然时会有点难过。",
+      "代价是你很少提要求，于是很少有人想到要问你想要什么。"],
+    ESTJ: ["总经理", "Executive",
+      "处理现实问题的效率很高，看不惯拖泥带水。规矩对你是秩序，不是束缚。",
+      "代价是你容易把“我认为对的”直接当成“应该的”。"],
+    ESFJ: ["执政官", "Consul",
+      "在意一个群体里的关系是不是顺的，会主动去缝补那些裂缝。被人需要让你踏实。",
+      "代价是冲突让你不舒服，有时会用和气换掉本该说清的事。"],
+    ISTP: ["鉴赏家", "Virtuoso",
+      "动手比动嘴快，遇到问题先拆开看看。不太表态，但心里有数。",
+      "代价是别人常常猜不到你的态度，只好自己补完剧情。"],
+    ISFP: ["探险家", "Adventurer",
+      "对具体的美感和当下的感受很敏锐，不喜欢被规定该怎么活。安静，但有自己很硬的底线。",
+      "代价是你不擅长为自己争，很多该得的东西就这么过去了。"],
+    ESTP: ["企业家", "Entrepreneur",
+      "在现场的反应速度远超计划时的思考，越是突发越来劲。喜欢事情真的发生。",
+      "代价是长远的那部分，常常被推给以后。"],
+    ESFP: ["表演者", "Entertainer",
+      "身上有种把气氛点起来的能力，也真心享受此刻。",
+      "代价是不太喜欢回看，同一个坑可能踩两次。"]
+  };
+
+  var answers = new Array(QUESTIONS.length).fill(null);
+  var current = 0;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var screens = { intro: $("screen-intro"), quiz: $("screen-quiz"), result: $("screen-result") };
+
+  function show(name) {
+    Object.keys(screens).forEach(function (k) {
+      screens[k].classList.toggle("on", k === name);
+    });
+    $("actions").classList.toggle("show", name === "quiz" || name === "result");
+    window.scrollTo(0, 0);
+  }
+
+  function renderBar() {
+    var html = "";
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      var cls = i < current ? "done" : (i === current ? "now" : "");
+      html += '<i class="' + cls + '"></i>';
+    }
+    $("bar").innerHTML = html;
+  }
+
+  function renderQuestion() {
+    var q = QUESTIONS[current];
+    renderBar();
+
+    $("qidx").innerHTML = "0" + (current + 1) + "<span> / 0" + QUESTIONS.length + "</span>";
+    $("qdim").textContent = q.name;
+
+    var opts = q.options.map(function (o) {
+      var on = answers[current] === o.letter ? " on" : "";
+      return '<button class="opt' + on + '" type="button" data-letter="' + o.letter + '">' +
+        '<div class="opt-head">' +
+          '<span class="opt-title">' + o.title + '</span>' +
+          '<span class="tick"></span>' +
+        '</div>' +
+        '<span class="opt-sub">' + o.sub + '</span>' +
+        '<p class="opt-body">' + o.body + '</p>' +
+      '</button>';
+    }).join("");
+
+    $("quizBody").innerHTML = '<p class="scene">' + q.scene + '</p><div class="opts">' + opts + '</div>';
+
+    Array.prototype.forEach.call($("quizBody").querySelectorAll(".opt"), function (el) {
+      el.addEventListener("click", function () {
+        answers[current] = el.getAttribute("data-letter");
+        Array.prototype.forEach.call($("quizBody").querySelectorAll(".opt"), function (x) {
+          x.classList.remove("on");
+        });
+        el.classList.add("on");
+        updateNext();
+        if (current < QUESTIONS.length - 1) {
+          setTimeout(function () { current++; renderQuestion(); }, 260);
+        }
+      });
+    });
+
+    $("prevBtn").style.display = current === 0 ? "none" : "";
+    updateNext();
+  }
+
+  function updateNext() {
+    var btn = $("nextBtn");
+    var ready = !!answers[current];
+    btn.disabled = !ready;
+    var last = current === QUESTIONS.length - 1;
+    btn.textContent = last ? "查看结果" : "下一题";
+  }
+
+  function computeType() {
+    return answers.map(function (a) { return a; }).join("");
+  }
+
+  function showResult() {
+    var code = computeType();
+    var t = TYPES[code] || TYPES.INTJ;
+
+    $("rType").textContent = code;
+    $("rName").innerHTML = t[0] + '<span class="en">' + t[1] + '</span>';
+    $("rTag").textContent = t[2];
+    $("rDesc").textContent = t[3] || "";
+
+    var dims = [["E", "交互激活型", "I", "独立真空型"],
+                ["S", "实体质感型", "N", "概念模型型"],
+                ["T", "诊断修复型", "F", "情感接纳型"],
+                ["J", "闭合归档型", "P", "动态演进型"]];
+
+    $("rDims").innerHTML = dims.map(function (d, i) {
+      var picked = answers[i];
+      var name = picked === d[0] ? d[1] : d[3];
+      var other = picked === d[0] ? d[3] : d[1];
+      var otherLetter = picked === d[0] ? d[2] : d[0];
+      return '<li><span class="p">' + picked + '</span><span class="n">' + name + '</span>' +
+             '<span class="alt">而非 ' + otherLetter + ' ' + other + '</span></li>';
+    }).join("");
+
+    $("actions").innerHTML = '<div class="inner">' +
+      '<button class="btn ghost" type="button" id="againBtn">重新测</button>' +
+      '<button class="btn primary" type="button" id="shareBtn">复制结果</button>' +
+      '</div>';
+
+    $("againBtn").addEventListener("click", function () {
+      answers = new Array(QUESTIONS.length).fill(null);
+      current = 0;
+      buildActions();
+      show("quiz");
+      renderQuestion();
+    });
+
+    $("shareBtn").addEventListener("click", function () {
+      var text = "我的 MBTI 类型是 " + code + " " + t[0] + " · " + t[2];
+      if (navigator.share) {
+        navigator.share({ title: "MBTI 人格测试", text: text, url: location.href }).catch(function () {});
+        return;
+      }
+      navigator.clipboard.writeText(text + " " + location.href).then(function () {
+        $("shareBtn").textContent = "已复制";
+        setTimeout(function () { $("shareBtn").textContent = "复制结果"; }, 1600);
+      }).catch(function () {
+        $("shareBtn").textContent = "复制失败";
+        setTimeout(function () { $("shareBtn").textContent = "复制结果"; }, 1600);
+      });
+    });
+
+    show("result");
+  }
+
+  function buildActions() {
+    $("actions").innerHTML = '<div class="inner">' +
+      '<button class="btn ghost" id="prevBtn" type="button">上一题</button>' +
+      '<button class="btn primary" id="nextBtn" type="button" disabled>下一题</button>' +
+      '</div>';
+    $("prevBtn").addEventListener("click", function () {
+      if (current > 0) { current--; renderQuestion(); }
+    });
+    $("nextBtn").addEventListener("click", function () {
+      if (!answers[current]) return;
+      if (current < QUESTIONS.length - 1) { current++; renderQuestion(); }
+      else { showResult(); }
+    });
+  }
+
+  buildActions();
+  $("startBtn").addEventListener("click", function () {
+    show("quiz");
+    renderQuestion();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (!screens.quiz.classList.contains("on")) return;
+    if (e.key === "1" || e.key === "2") {
+      var idx = e.key === "1" ? 0 : 1;
+      var opts = $("quizBody").querySelectorAll(".opt");
+      if (opts[idx]) opts[idx].click();
+    }
+    if (e.key === "Enter" && !$("nextBtn").disabled) $("nextBtn").click();
+  });
+})();
+</script>
+</body>
+</html>
